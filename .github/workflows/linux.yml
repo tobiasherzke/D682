@@ -40,6 +40,7 @@ jobs:
            make unit-tests
     - name: system tests
       run: |
+           echo -Djdk.lang.processReaperUseDefaultStackSize=true | sudo tee -a /usr/share/octave/5.2.0/m/java/java.opts
            sudo -E apt-get -y install octave-signal default-jre-headless
            ./configure
            make test

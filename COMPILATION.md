@@ -81,6 +81,13 @@ make unit-tests
 ```
 
 #### Executing system tests with self-compiled openMHA on Linux:
+If using Ubuntu 20.04, then edit or create a file
+`/usr/share/octave/5.2.0/m/java/java.opts` and make sure that it contains a line
+```
+-Djdk.lang.processReaperUseDefaultStackSize=true
+```
+This works around an error in the Octave package of Ubuntu 20.04, for details
+refer to https://savannah.gnu.org/bugs/?59310.  Then:
 ```
 sudo make install octave-signal default-jre-headless
 ./configure
