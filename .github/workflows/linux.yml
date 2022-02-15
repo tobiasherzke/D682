@@ -26,7 +26,10 @@ jobs:
            sudo apt-get -y update
            sudo -E apt-get -y install g++ libsndfile1-dev libjack-jackd2-dev
            sudo -E apt-get -y install portaudio19-dev jackd2 liblo-dev
-           sudo -E apt-get -y install libeigen3-dev
+           sudo -E apt-get -y install libeigen3-dev wget
+           wget -qO- https://apt.hoertech.de/openmha-packaging.pub | sudo apt-key add -
+           sudo apt-add-repository 'deb [arch=amd64] http://apt.hoertech.de focal universe'
+           sudo -E apt-get -y install liblsl
       # TODO: Install liblsl
     - name: Configure and build openMHA
       run: |
