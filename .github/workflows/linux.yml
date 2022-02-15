@@ -34,9 +34,10 @@ jobs:
            make
     - name: Installation of self-compiled openMHA
       run: make install
-  
     - name: unit-tests
-      run: make unit-tests
+      run: |
+           sudo -E apt-get -y install libboost-dev
+           make unit-tests
     - name: system tests
       run: |
            sudo -E apt-get -y install octave-signal default-jre-headless

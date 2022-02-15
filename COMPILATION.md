@@ -8,7 +8,7 @@ This guide describes how to compile openMHA from sources for developers.
 
 ## I. Compiling from source on Linux
 
-### Linux Prerequisites
+### Linux prerequisites
 64-bit version of Ubuntu 18.04 or later,
 or a Beaglebone Black running Debian Buster.
 
@@ -76,6 +76,7 @@ loaded.
 
 #### Testing self-compiled openMHA with unit tests on Linux:
 ```
+sudo apt install libboost-dev
 make unit-tests
 ```
 
