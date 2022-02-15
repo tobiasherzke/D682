@@ -1,0 +1,44 @@
+name: Follow Compilation.md on Ubuntu
+
+on:
+  push:
+    branches: ['*']
+    tags: 
+  pull_request:
+  release:
+    types: ['created']
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    name: Compiling from source on Linux
+    runs-on: ubuntu-20.04
+    env:
+      DEBIAN_FRONTEND: noninteractive
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Linux Prerequesites
+      run: |
+           uname -a
+           sudo apt-get -y update
+           sudo -E apt-get -y install g++ libsndfile1-dev libjack-jackd2-dev
+           sudo -E apt-get -y install portaudio19-dev jackd2 liblo-dev
+           sudo -E apt-get -y install libeigen3-dev
+      # TODO: Install liblsl
+    - name: Configure and build openMHA
+      run: |
+           ./configure
+           make
+    - name: Installation of self-compiled openMHA
+      run: make install
+  
+    - name: unit-tests
+      run: make unit-tests
+    - name: system tests
+      run: |
+           sudo -E apt-get -y install octave-signal default-jre-headless
+           ./configure
+           make test
