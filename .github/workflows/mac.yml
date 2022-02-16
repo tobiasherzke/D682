@@ -18,6 +18,15 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Test Homebrew Octave
+      run: |
+           brew update
+           brew install octave
+           octave --no-gui --no-window-system --eval "ver" || true
+           octave --no-gui --no-window-system --eval "pkg list" || true
+           octave --no-gui --no-window-system --eval "pkg install -forge control signal" || true
+           octave --no-gui --no-window-system --eval "javaclasspath" || true
+           false
     - name: Install macOS prerequesites via Homebrew
       run: |
            uname -a
