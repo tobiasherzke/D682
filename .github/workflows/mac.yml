@@ -22,15 +22,8 @@ jobs:
       run: |
            brew update
            brew install gfortran
-           gfortran --version || true
-           brew install gcc
-           gfortran --version || true
-           fortran --version || true
-           which fortran || true
-           which gfortran || true
-           brew list --verbose gcc
-           ls -l /usr/local/bin
-           false
+           sudo ln -s $(ls /usr/local/bin/gfortran-* | sort -V | tail -1) /usr/local/bin/gfortran || true
+           gfortran --version
            brew install octave
            octave --no-gui --no-window-system --eval "ver" || true
            octave --no-gui --no-window-system --eval "pkg list" || true
