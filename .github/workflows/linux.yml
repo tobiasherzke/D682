@@ -33,15 +33,15 @@ jobs:
     - name: Configure and build openMHA
       run: |
            ./configure
-           make
+           make -j 3
     - name: Installation of self-compiled openMHA
       run: |
-           make install
+           make -j 3 install
            source bin/thismha.sh && mha '?' cmd=quit
     - name: unit-tests
       run: |
            sudo -E apt-get -y install libboost-dev
-           make unit-tests
+           make -j 4 unit-tests
     - name: system tests
       run: |
            sudo mkdir -p /usr/share/octave/5.2.0/m/java
@@ -49,4 +49,4 @@ jobs:
            echo -Djdk.lang.processReaperUseDefaultStackSize=true | sudo tee -a /usr/share/octave/5.2.0/m/java/java.opts
            sudo -E apt-get -y install octave-signal default-jre-headless
            ./configure
-           make test
+           make -j 2 test

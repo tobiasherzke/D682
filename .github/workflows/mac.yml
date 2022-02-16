@@ -30,22 +30,22 @@ jobs:
       run: |
            wget https://github.com/jackaudio/jack2-releases/releases/download/v1.9.20/jack2-macOS-intel-v1.9.20.tar.gz
            tar xf jack2-macOS-intel-v1.9.20.tar.gz
-           sudo installer $PWD/jack2-osx-1.9.20.pkg -target /
+           sudo installer -pkg $PWD/jack2-osx-1.9.20.pkg -target /
            rm -r jack2-macOS-intel-v1.9.20.tar.gz jack2-osx-1.9.20.pkg QjackCtl.app
     - name: Configure and build openMHA
       run: |
            ./configure
-           make
+           make -j 3
     - name: Installation of self-compiled openMHA
       run: |
-           make install
+           make -j 3 install
            source bin/thismha.sh && mha '?' cmd=quit
     - name: unit-tests
       run: |
            brew install boost
-           make unit-tests
+           make -j 4 unit-tests
     - name: system tests
       run: |
            brew install octave --with-java
            ./configure
-           make test
+           make -j 2 test
