@@ -1,4 +1,4 @@
-name: Follow Compilation.md on Mac
+name: Follow Compilation.md using Homebrew instead of MacPorts
 
 on:
   push:
@@ -14,7 +14,7 @@ defaults:
 
 jobs:
   build:
-    name: Compiling from source on macOS
+    name: Compiling from source on macOS using Homebrew
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2

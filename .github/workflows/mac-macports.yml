@@ -1,0 +1,58 @@
+name: Follow Compilation.md on Mac
+
+on:
+  push:
+    branches: ['*']
+    tags: 
+  pull_request:
+  release:
+    types: ['created']
+
+defaults:
+  run:
+    shell: bash
+  env:
+    JAVA_HOME: /Library/Java/JavaVirtualMachines/openjdk8/Contents/Home
+jobs:
+  build:
+    name: Compiling from source on macOS with MacPorts
+    runs-on: macos-11
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install macOS prerequisites via pkg installers or tarballs
+      run: |
+           wget https://github.com/jackaudio/jack2-releases/releases/download/v1.9.20/jack2-macOS-intel-v1.9.20.tar.gz
+           tar xf jack2-macOS-intel-v1.9.20.tar.gz
+           sudo installer -pkg $PWD/jack2-osx-1.9.20.pkg -target /
+           rm -r jack2-macOS-intel-v1.9.20.tar.gz jack2-osx-1.9.20.pkg QjackCtl.app
+           wget https://github.com/macports/macports-base/releases/download/v2.7.1/MacPorts-2.7.1-11-BigSur.pkg
+           sudo installer -pkg $PWD/MacPorts-2.7.1-11-BigSur.pkg -target /
+           rm MacPorts-2.7.1-11-BigSur.pkg
+           wget https://github.com/sccn/liblsl/releases/download/v1.15.2/liblsl-1.15.2-OSX_amd64.tar.bz2
+           sudo tar xf liblsl-1.15.2-OSX_amd64.tar.bz2 -C /usr/local
+           rm liblsl-1.15.2-OSX_amd64.tar.bz2
+    - name: Install macOS prerequisites via macports
+      run: |
+           uname -a
+           sudo port install libsndfile pkgconfig portaudio liblo openjdk8 eigen3
+           echo contents of liblo package:
+           port contents liblo
+           sudo port install octave +java octave-signal
+    - name: Configure and build openMHA
+      run: |
+           ./configure
+           make -j 3
+    - name: Installation of self-compiled openMHA
+      run: |
+           make -j 3 install
+           source bin/thismha.sh && mha '?' cmd=quit
+    - name: unit-tests
+      run: |
+           sudo port install boost
+           make -j 4 unit-tests
+    - name: system tests
+      run: |
+           octave --no-gui --no-window-system --eval "pkg list"
+           octave --no-gui --no-window-system --eval "pkg install -forge control signal"
+           ./configure
+           make -j 2 test
