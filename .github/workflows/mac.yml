@@ -29,6 +29,7 @@ jobs:
            which fortran || true
            which gfortran || true
            brew list --verbose gcc
+           ls -l /usr/local/bin
            false
            brew install octave
            octave --no-gui --no-window-system --eval "ver" || true
