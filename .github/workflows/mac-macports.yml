@@ -37,7 +37,7 @@ jobs:
            sudo /opt/local/bin/port install libsndfile pkgconfig portaudio liblo openjdk8 eigen3
            echo contents of liblo package:
            /opt/local/bin/port contents liblo
-           sudo /opt/local/bin/port install octave +java octave-signal
+           sudo /opt/local/bin/port install octave +java octave-signal || (echo "Contents of failed log file:"; cat /opt/local/var/macports/build/_opt_local_var_macports_sources_rsync.macports.org_macports_release_tarballs_ports_databases_db48/db48/work/db-4.8.30/build_unix/config.log)
     - name: Configure and build openMHA
       run: |
            ./configure
