@@ -1,4 +1,4 @@
-name: Follow Compilation.md on Ubuntu
+name: Follow Compilation.md on Mac
 
 on:
   push:
@@ -46,6 +46,6 @@ jobs:
            make -j 4 unit-tests
     - name: system tests
       run: |
-           brew install octave --with-java
+           brew install octave
            ./configure
            make -j 2 test
