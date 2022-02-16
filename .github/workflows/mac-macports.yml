@@ -36,11 +36,6 @@ jobs:
            uname -a
            echo "file://$PWD/.github/workflows/macports" | cat - /opt/local/etc/macports/sources.conf >/tmp/sources.conf
            sudo cp /tmp/sources.conf /opt/local/etc/macports/sources.conf
-           (cd $PWD/.github/workflows/macports; /opt/local/bin/portindex)
-           sudo sed -i -e "1 s/^/file://$PWD/.github/workflows/macports'
-           sudo /opt/local/bin/port install eigen3
-           sudo cp .github/workflows/macportsdb48-javaversion.diff $(/opt/local/bin/port dir db48)/files
-           echo patchfiles-append macportsdb48-javaversion.diff | sudo tee -a $(/opt/local/bin/port file db48)
            sudo /opt/local/bin/port install db48 +java
            sudo /opt/local/bin/port install libsndfile pkgconfig portaudio liblo openjdk8 eigen3
     - name: Configure and build openMHA
