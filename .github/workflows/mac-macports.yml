@@ -34,10 +34,10 @@ jobs:
     - name: Install macOS prerequisites via macports
       run: |
            uname -a
-           sudo port install libsndfile pkgconfig portaudio liblo openjdk8 eigen3
+           sudo /opt/local/bin/port install libsndfile pkgconfig portaudio liblo openjdk8 eigen3
            echo contents of liblo package:
-           port contents liblo
-           sudo port install octave +java octave-signal
+           /opt/local/bin/port contents liblo
+           sudo /opt/local/bin/port install octave +java octave-signal
     - name: Configure and build openMHA
       run: |
            ./configure
@@ -48,11 +48,11 @@ jobs:
            source bin/thismha.sh && mha '?' cmd=quit
     - name: unit-tests
       run: |
-           sudo port install boost
+           sudo /opt/local/bin/port install boost
            make -j 4 unit-tests
     - name: system tests
       run: |
-           octave --no-gui --no-window-system --eval "pkg list"
-           octave --no-gui --no-window-system --eval "pkg install -forge control signal"
-           ./configure
-           make -j 2 test
+           /opt/local/bin/octave --no-gui --no-window-system --eval "pkg list"
+           /opt/local/bin/octave --no-gui --no-window-system --eval "pkg install -forge control signal"
+           PATH="$PATH:/opt/local/bin" ./configure
+           PATH="$PATH:/opt/local/bin" make -j 2 test
