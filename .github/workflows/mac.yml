@@ -27,7 +27,8 @@ jobs:
            gfortran --version || true
            fortran --version || true
            which fortran || true
-           which gforttran || true
+           which gfortran || true
+           brew list --verbose gcc
            false
            brew install octave
            octave --no-gui --no-window-system --eval "ver" || true
