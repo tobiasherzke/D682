@@ -93,7 +93,8 @@ sudo make install octave-signal default-jre-headless
 ./configure
 make test
 ```
-Matlab can be used as an alternative to installing Octave.
+Matlab with signal processing toolbox can be used as an alternative to
+installing Octave.
 These tests include some reproducibility checks that will fail if openMHA
 source code was changed and not checked into git, or if different components
 were compiled from different git commits.
@@ -177,7 +178,8 @@ make unit-tests
 
 #### Executing system tests with self-compiled openMHA on macOS:
 Install Octave and Java so that Octave can be found on the PATH.
-Matlab can be used as an alternative.
+Install the Octave packages "control" and "signal".
+Matlab with signal processing toolbox can be used as an alternative.
 ```
 ./configure
 make test
