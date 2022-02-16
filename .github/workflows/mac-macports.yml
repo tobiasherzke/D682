@@ -14,7 +14,7 @@ defaults:
 jobs:
   build:
     name: Compiling from source on macOS with MacPorts
-    runs-on: macos-10.15
+    runs-on: macos-11
     env:
       JAVA_HOME: /Library/Java/JavaVirtualMachines/openjdk8-temurin/Contents/Home
       CFLAGS: -I/Library/Java/JavaVirtualMachines/openjdk8-temurin/Contents/Home/include
@@ -27,9 +27,9 @@ jobs:
            tar xf jack2-macOS-intel-v1.9.20.tar.gz
            sudo installer -pkg $PWD/jack2-osx-1.9.20.pkg -target /
            rm -r jack2-macOS-intel-v1.9.20.tar.gz jack2-osx-1.9.20.pkg QjackCtl.app
-           wget https://github.com/macports/macports-base/releases/download/v2.7.1/MacPorts-2.7.1-10.15-Catalina.pkg
-           sudo installer -pkg $PWD/MacPorts-2.7.1-10.15-Catalina.pkg -target /
-           rm MacPorts-2.7.1-10.15-Catalina.pkg
+           wget https://github.com/macports/macports-base/releases/download/v2.7.1/MacPorts-2.7.1-11-BigSur.pkg
+           sudo installer -pkg $PWD/MacPorts-2.7.1-11-BigSur.pkg -target /
+           rm MacPorts-2.7.1-11-BigSur.pkg
            wget https://github.com/sccn/liblsl/releases/download/v1.15.2/liblsl-1.15.2-OSX_amd64.tar.bz2
            sudo tar xf liblsl-1.15.2-OSX_amd64.tar.bz2 -C /usr/local
            rm liblsl-1.15.2-OSX_amd64.tar.bz2
@@ -39,7 +39,9 @@ jobs:
            echo "file://$PWD/.github/workflows/macports" | cat - /opt/local/etc/macports/sources.conf >/tmp/sources.conf
            sudo cp /tmp/sources.conf /opt/local/etc/macports/sources.conf
            sudo /opt/local/bin/port install openjdk8
-           sudo /opt/local/bin/port install db48 +java || (cat /opt/local/var/macports/logs/_Users_runner_work_D682_D682_.github_workflows_macports_databases_db48/db48/main.log;false)
+           sudo /opt/local/bin/port install db48 +java || true
+           cat /opt/local/var/macports/logs/_Users_runner_work_D682_D682_.github_workflows_macports_databases_db48/db48/main.log
+           false
            sudo /opt/local/bin/port install libsndfile pkgconfig portaudio liblo openjdk8 eigen3
     - name: Configure and build openMHA
       run: |
