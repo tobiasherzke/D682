@@ -34,10 +34,11 @@ jobs:
     - name: Install macOS prerequisites via macports
       run: |
            uname -a
+           sudo /opt/local/bin/port install eigen3
+           sudo cp .github/workflows/macportsdb48-javaversion.diff $(/opt/local/bin/port dir db48)/files
+           echo patchfiles-append macportsdb48-javaversion.diff | sudo tee -a $(/opt/local/bin/port file db48)
+           sudo /opt/local/bin/port install db48 +java
            sudo /opt/local/bin/port install libsndfile pkgconfig portaudio liblo openjdk8 eigen3
-           echo contents of liblo package:
-           /opt/local/bin/port contents liblo
-           sudo /opt/local/bin/port install octave +java octave-signal || (echo "Contents of failed log file:"; cat /opt/local/var/macports/build/_opt_local_var_macports_sources_rsync.macports.org_macports_release_tarballs_ports_databases_db48/db48/work/db-4.8.30/build_unix/config.log)
     - name: Configure and build openMHA
       run: |
            ./configure
@@ -52,6 +53,7 @@ jobs:
            make -j 4 unit-tests
     - name: system tests
       run: |
+           sudo /opt/local/bin/port install octave +java octave-signal
            /opt/local/bin/octave --no-gui --no-window-system --eval "pkg list"
            /opt/local/bin/octave --no-gui --no-window-system --eval "pkg install -forge control signal"
            PATH="$PATH:/opt/local/bin" ./configure

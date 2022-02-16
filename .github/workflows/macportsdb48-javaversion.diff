@@ -1,0 +1,19 @@
+--- dist/configure.orig	2022-02-16 18:55:59.941339386 +0100
++++ dist/configure	2022-02-16 18:55:59.939339386 +0100
+@@ -16919,11 +16919,11 @@
+ 	esac
+ 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $JAVA_VERSION" >&5
+ $as_echo "$JAVA_VERSION" >&6; }
+-	case "$JAVA_VERSION" in
+-	1.[3456789]* | 1.[1-9][0-9]* | [23456789]* ) ;;
+-	* )
+-		as_fn_error "Java version 1.3 or higher required, got $JAVA_VERSION" "$LINENO" 5 ;;
+-	esac
++#	case "$JAVA_VERSION" in
++#	1.[3456789]* | 1.[1-9][0-9]* | [23456789]* ) ;;
++#	* )
++#		as_fn_error "Java version 1.3 or higher required, got $JAVA_VERSION" "$LINENO" 5 ;;
++#	esac
+ 
+ 	# Because of the code that SWIG generates to cast between pointers and
+ 	# integers, we need to add the flag "-fno-strict-aliasing" to the gcc
