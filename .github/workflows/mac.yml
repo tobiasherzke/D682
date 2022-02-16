@@ -21,7 +21,15 @@ jobs:
     - name: Test Homebrew Octave
       run: |
            brew update
-           brew install gfortran octave
+           brew install gfortran
+           gfortran --version || true
+           brew install gcc
+           gfortran --version || true
+           fortran --version || true
+           which fortran || true
+           which gforttran || true
+           false
+           brew install octave
            octave --no-gui --no-window-system --eval "ver" || true
            octave --no-gui --no-window-system --eval "pkg list" || true
            octave --no-gui --no-window-system --eval "pkg install -forge control signal" || true
