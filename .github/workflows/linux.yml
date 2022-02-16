@@ -20,7 +20,7 @@ jobs:
       DEBIAN_FRONTEND: noninteractive
     steps:
     - uses: actions/checkout@v2
-    - name: Install Linux Prerequesites
+    - name: Install Linux prerequesites
       run: |
            uname -a
            sudo apt-get -y update
@@ -30,13 +30,14 @@ jobs:
            wget -qO- https://apt.hoertech.de/openmha-packaging.pub | sudo apt-key add -
            sudo apt-add-repository 'deb [arch=amd64] http://apt.hoertech.de focal universe'
            sudo -E apt-get -y install liblsl
-      # TODO: Install liblsl
     - name: Configure and build openMHA
       run: |
            ./configure
            make
     - name: Installation of self-compiled openMHA
-      run: make install
+      run: |
+           make install
+           source bin/thismha.sh && mha '?' cmd=quit
     - name: unit-tests
       run: |
            sudo -E apt-get -y install libboost-dev

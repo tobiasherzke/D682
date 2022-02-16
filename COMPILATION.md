@@ -170,6 +170,7 @@ loaded.
 ### Testing self-compiled openMHA on macOS:
 
 #### Testing self-compiled openMHA with unit tests on macOS:
+Install the boost library headers, then
 ```
 make unit-tests
 ```
