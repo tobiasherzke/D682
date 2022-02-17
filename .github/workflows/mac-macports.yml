@@ -39,12 +39,15 @@ jobs:
            echo "file://$PWD/.github/workflows/macports" | cat - /opt/local/etc/macports/sources.conf >/tmp/sources.conf
            sudo cp /tmp/sources.conf /opt/local/etc/macports/sources.conf
            sudo /opt/local/bin/port install openjdk8
+           which java
            echo $JAVA_HOME
            ls -l $JAVA_HOME
            echo $JAVA_HOME/bin >> $GITHUB_PATH
            sudo cp $JAVA_HOME/include/jni.h $JAVA_HOME/include/*/jni_md.h /opt/local/include
+           sudo rm -rf /usr/local
     - name: Install macOS prerequisites via macports part 2
       run: |
+           which java
            sudo /opt/local/bin/port install db48 +java || true
            cat /opt/local/var/macports/logs/_Users_runner_work_D682_D682_.github_workflows_macports_databases_db48/db48/main.log
            false
