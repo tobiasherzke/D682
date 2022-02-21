@@ -46,7 +46,7 @@ function create_testfile(inwav, factor)
   signal = [[1:200]',[1:200]'/2] * factor;
   audiowrite(inwav, signal, srate, 'BitsPerSample', 32);
   % delete produced sound files after the test
-  unittest_teardown(@delete, inwav);
+  %unittest_teardown(@delete, inwav);
 end
 
 function test_addsndfile_path

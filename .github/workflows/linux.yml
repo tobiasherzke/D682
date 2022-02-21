@@ -50,3 +50,7 @@ jobs:
            sudo -E apt-get -y install octave-signal default-jre-headless
            ./configure
            make -j 2 test
+    - uses: actions/upload-artifact@v2
+      with:
+        name: test-addsndfile-wavs
+        path: mha/mhatest/*.wav

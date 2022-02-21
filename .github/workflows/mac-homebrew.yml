@@ -56,3 +56,7 @@ jobs:
            octave --no-gui --no-window-system --eval "pkg install -forge control signal"
            ./configure
            make -j 2 test
+    - uses: actions/upload-artifact@v2
+      with:
+        name: test-addsndfile-wavs
+        path: mha/mhatest/*.wav
