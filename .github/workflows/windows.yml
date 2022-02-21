@@ -1,0 +1,69 @@
+name: Follow Compilation.md on Ubuntu
+
+on:
+  push:
+    branches: ['*']
+    tags: 
+  pull_request:
+  release:
+    types: ['created']
+
+defaults:
+  run:
+    # We use msys to compile with mingw
+    shell: msys2 {0}
+
+jobs:
+  build:
+    name: Compiling from source on Linux
+    runs-on: ubuntu-20.04
+    env:
+      DEBIAN_FRONTEND: noninteractive
+    steps:
+    - uses: actions/checkout@v2
+    # We use the preinstalled msys2 on the github actions windows runner.
+    - uses: msys2/setup-msys2@v2
+      with:
+        release: false
+    - name: Install Jack from https://github.com/jackaudio/jack2-releases/releases/download/v1.9.20/jack2-win64-v1.9.20.exe or later
+      shell: pwsh
+      run: choco install jack
+    - name: Install msys2 prerequesites
+      run: |
+           uname -a
+           pacman -S msys/git mingw64/mingw-w64-x86_64-gcc msys/make tar
+           pacman -S mingw64/mingw-w64-x86_64-boost openbsd-netcat
+           pacman -S mingw-w64-x86_64-libsndfile mingw-w64-x86_64-portaudio
+           pacman -S mingw64/mingw-w64-x86_64-nsis mingw-w64-x86_64-eigen3 msys/wget
+           pacman -S msys/unzip msys/zip dos2unix mingw64/mingw-w64-x86_64-curl
+    - name: Copy Jack for Windows developer resources to directories where MinGW64 will find them
+      run: |
+           cp -rv /c/Program*Files/Jack2/include/* /mingw64/include/
+           # Notice the renaming:
+           cp /c/Program*Files/Jack2/lib/libjack64.dll.a /mingw64/lib/libjack.dll.a
+    - name: Install liblsl:
+      run: |
+           wget https://github.com/HoerTech-gGmbH/liblsl/releases/download/v1.14.0-htch/liblsl-1.14.0-MinGW64.zip
+           unzip -d /mingw64 liblsl-1.14.0-MinGW64.zip
+           rm liblsl-1.14.0-MinGW64.zip
+    - name: Configure, build, install, and smoke-test openMHA
+      run: |
+           ./configure
+           make -j 3 install
+           cd bin && mha ? cmd=quit
+    - name: unit-tests
+      run: |
+           sudo -E apt-get -y install libboost-dev
+           make -j 4 unit-tests
+    - name: system test preparations
+      run: |
+           choco install openjdk
+           choco install octave
+    - name: system tests
+      run: |
+           cd mha/mhatest
+           /c/Octave/Octave-*/mingw64/bin/octave-cli.exe --eval "set_environement; exit(run_all_tests)"
+    - uses: actions/upload-artifact@v2
+      with:
+        name: test-addsndfile-wavs
+        path: mha/mhatest/*.wav
