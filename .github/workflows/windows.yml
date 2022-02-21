@@ -59,7 +59,7 @@ jobs:
       run: |
            ./configure
            make -j 3 install
-           cd bin && mha ? cmd=quit
+           cd bin && ls && ./mha ? cmd=quit
     - name: unit-tests
       run: |
            sudo -E apt-get -y install libboost-dev
