@@ -55,7 +55,7 @@ jobs:
            brew install octave
            octave --no-gui --no-window-system --eval "pkg install -forge control signal"
            ./configure
-           make -j 2 test
+           make -j 2 test || true
     - uses: actions/upload-artifact@v2
       with:
         name: test-addsndfile-wavs
