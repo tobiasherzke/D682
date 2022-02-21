@@ -246,9 +246,9 @@ The compilation may take a while.
 To start a self-compiled openMHA on Windows, you need to 
 1) start the MinGW-64 bash shell in the MSYS2 terminal and there
 2) change directory to the openMHA/bin directory, then
-3) start mha by typing 
+3) test mha execution by typing 
    ```
-   ./mha.exe
+   ./mha.exe ? cmd=quit
    ```
 Not following this procedure can result in MHA not being able to find
 all necessary DLLs.
@@ -268,7 +268,7 @@ make unit-tests
   of that bin directory.
 - Install Octave for 64-bit Windows from http://octave.org.
 - Start the MinGW-64 bash shell in an MSYS2 terminal and there
-- change directory to the openMHA/mha/mhatest directory, then
+- change directory to the **openMHA/mha/mhatest** directory, then
 - start Octave by typing (insert the correct version of Octave)
 ```
 /c/Octave/Octave->>version<</mingw64/bin/octave-gui.exe --gui
