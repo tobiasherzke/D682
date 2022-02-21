@@ -1,0 +1,58 @@
+name: Follow Compilation.md using Homebrew instead of MacPorts
+
+on:
+  push:
+    branches: ['*']
+    tags: 
+  pull_request:
+  release:
+    types: ['created']
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    name: Compiling from source on macOS using Homebrew
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install macOS prerequesites via Homebrew
+      run: |
+           uname -a
+           brew update
+           brew install libsndfile
+           brew install portaudio
+           brew install liblo
+           brew install eigen
+    - name: Install macOS prerequisites via pkg installers and tarballs
+      run: |
+           wget https://github.com/jackaudio/jack2-releases/releases/download/v1.9.20/jack2-macOS-intel-v1.9.20.tar.gz
+           tar xf jack2-macOS-intel-v1.9.20.tar.gz
+           sudo installer -pkg $PWD/jack2-osx-1.9.20.pkg -target /
+           rm -r jack2-macOS-intel-v1.9.20.tar.gz jack2-osx-1.9.20.pkg QjackCtl.app
+           wget https://github.com/sccn/liblsl/releases/download/v1.15.2/liblsl-1.15.2-OSX_amd64.tar.bz2
+           sudo tar xf liblsl-1.15.2-OSX_amd64.tar.bz2 -C /usr/local
+           rm liblsl-1.15.2-OSX_amd64.tar.bz2
+    - name: Configure and build openMHA
+      run: |
+           ./configure
+           make -j 3
+    - name: Installation of self-compiled openMHA
+      run: |
+           make -j 3 install
+           source bin/thismha.sh && mha '?' cmd=quit
+    - name: unit-tests
+      run: |
+           brew install boost
+           make -j 4 unit-tests
+    - name: system tests
+      run: |
+           brew update
+           brew install gfortran
+           sudo ln -s $(ls /usr/local/bin/gfortran-* | sort -V | tail -1) /usr/local/bin/gfortran || true
+           brew install octave
+           octave --no-gui --no-window-system --eval "pkg install -forge control signal"
+           ./configure
+           make -j 2 test

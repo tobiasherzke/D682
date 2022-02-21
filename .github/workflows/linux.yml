@@ -1,0 +1,52 @@
+name: Follow Compilation.md on Ubuntu
+
+on:
+  push:
+    branches: ['*']
+    tags: 
+  pull_request:
+  release:
+    types: ['created']
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    name: Compiling from source on Linux
+    runs-on: ubuntu-20.04
+    env:
+      DEBIAN_FRONTEND: noninteractive
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Linux prerequesites
+      run: |
+           uname -a
+           sudo apt-get -y update
+           sudo -E apt-get -y install g++ libsndfile1-dev libjack-jackd2-dev
+           sudo -E apt-get -y install portaudio19-dev jackd2 liblo-dev
+           sudo -E apt-get -y install libeigen3-dev wget
+           wget -qO- https://apt.hoertech.de/openmha-packaging.pub | sudo apt-key add -
+           sudo apt-add-repository 'deb [arch=amd64] http://apt.hoertech.de focal universe'
+           sudo -E apt-get -y install liblsl
+    - name: Configure and build openMHA
+      run: |
+           ./configure
+           make -j 3
+    - name: Installation of self-compiled openMHA
+      run: |
+           make -j 3 install
+           source bin/thismha.sh && mha '?' cmd=quit
+    - name: unit-tests
+      run: |
+           sudo -E apt-get -y install libboost-dev
+           make -j 4 unit-tests
+    - name: system tests
+      run: |
+           sudo mkdir -p /usr/share/octave/5.2.0/m/java
+           sudo touch /usr/share/octave/5.2.0/m/java/java.opts
+           echo -Djdk.lang.processReaperUseDefaultStackSize=true | sudo tee -a /usr/share/octave/5.2.0/m/java/java.opts
+           sudo -E apt-get -y install octave-signal default-jre-headless
+           ./configure
+           make -j 2 test
