@@ -61,9 +61,7 @@ jobs:
            make -j 3 install
            cd bin && ls && ./mha ? cmd=quit
     - name: unit-tests
-      run: |
-           sudo -E apt-get -y install libboost-dev
-           make -j 4 unit-tests
+      run: make -j 4 unit-tests
     - name: system test preparations
       run: |
            choco install openjdk
