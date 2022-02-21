@@ -1,4 +1,4 @@
-name: Follow Compilation.md on Ubuntu
+name: Follow Compilation.md on Windows
 
 on:
   push:
