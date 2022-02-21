@@ -222,7 +222,7 @@ function test_addsndfile_levelmode_peak(zerowav,rampwav,outwav)
   disp('expected_peak-10^(level/20)*2*10^(-5)');
   sprintf('%.17g,',expected_peak-10^(level/20)*2*10^(-5));
   disp('expected_peak-peak');
-  disp('%.17g,',expected_peak-peak);
+  sprintf('%.17g,',expected_peak-peak);
   assert_almost([1 0.5] * expected_peak, peak, 1e-6, ...
                 'peak: unexpected maximum sample values for level');
 end
