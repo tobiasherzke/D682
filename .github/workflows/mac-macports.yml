@@ -15,10 +15,6 @@ jobs:
   build:
     name: Compiling from source on macOS with MacPorts
     runs-on: macos-11
-    env:
-      JAVA_HOME: /Library/Java/JavaVirtualMachines/openjdk8-temurin/Contents/Home
-      CFLAGS: -I/Library/Java/JavaVirtualMachines/openjdk8-temurin/Contents/Home/include
-      CXXFLAGS: -I/Library/Java/JavaVirtualMachines/openjdk8-temurin/Contents/Home/include
     steps:
     - uses: actions/checkout@v2
     - name: Install macOS prerequisites via pkg installers or tarballs
