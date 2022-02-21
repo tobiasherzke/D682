@@ -25,9 +25,6 @@ jobs:
     - uses: msys2/setup-msys2@v2
       with:
         release: false
-    - name: Install Jack from https://github.com/jackaudio/jack2-releases/releases/download/v1.9.20/jack2-win64-v1.9.20.exe or later
-      shell: pwsh
-      run: choco install jack
     - name: Install msys2 prerequesites
       run: |
            uname -a
@@ -36,6 +33,18 @@ jobs:
            pacman -S mingw-w64-x86_64-libsndfile mingw-w64-x86_64-portaudio
            pacman -S mingw64/mingw-w64-x86_64-nsis mingw-w64-x86_64-eigen3 msys/wget
            pacman -S msys/unzip msys/zip dos2unix mingw64/mingw-w64-x86_64-curl
+    - name: Install Jack from https://github.com/jackaudio/jack2-releases/releases/download/v1.9.20/jack2-win64-v1.9.20.exe or later
+      # Using manual installation, users would execute the installer above.
+      # With github actions, this should be achieved by using chocolatey,
+      # however, in practice chocolatey is too unreliable to be used in CI
+      # pipelines (it fails too often for unknown reasons).
+      # shell: pwsh
+      # run: choco install jack
+      # Replacing with a .zip of a manual installation
+      run: |
+           wget https://github.com/HoerTech-gGmbH/jack2-releases/releases/download/v1.9.20/JACK2.zip
+           unzip -d /c/Program*Files JACK2.zip
+           rm JACK2.zip
     - name: Copy Jack for Windows developer resources to directories where MinGW64 will find them
       run: |
            cp -rv /c/Program*Files/Jack2/include/* /mingw64/include/
