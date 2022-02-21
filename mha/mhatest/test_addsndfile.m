@@ -219,6 +219,10 @@ function test_addsndfile_levelmode_peak(zerowav,rampwav,outwav)
   peak =  max(abs(audioread(outwav)));
   expected_peak = 10^(level/20)*2*10^(-5);
   expected_peak = 0.0014158915687682763; % Same as previous line except on Mac Homebrew 6.4.0
+  disp('expected_peak-10^(level/20)*2*10^(-5)');
+  disp(expected_peak-10^(level/20)*2*10^(-5));
+  disp('expected_peak-peak');
+  disp(expected_peak-peak);
   assert_almost([1 0.5] * expected_peak, peak, 1e-6, ...
                 'peak: unexpected maximum sample values for level');
 end
