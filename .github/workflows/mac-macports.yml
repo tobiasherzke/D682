@@ -41,6 +41,7 @@ jobs:
       run: |
            make -j 3 install
            source bin/thismha.sh && mha '?' cmd=quit
+           otool -L lib/MHAIOJackdb.dylib
     - name: unit-tests
       run: |
            sudo /opt/local/bin/port install boost
