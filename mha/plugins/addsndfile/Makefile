@@ -18,7 +18,7 @@ custom: mytest all
 include ../plugin.mk
 
 mytest: $(BUILD_DIR)/testcos
-	$<
+	LD_LIBRARY_PATH=../../libmha/$(BUILD_DIR) PATH="$$PATH:"../../libmha/$(BUILD_DIR) $<
 
 # Local Variables:
 # compile-command: "make"

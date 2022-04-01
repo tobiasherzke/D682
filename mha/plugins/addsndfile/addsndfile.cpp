@@ -219,8 +219,10 @@ namespace addsndfile {
         l_new(l_new_),
         l_old(l_old_)
     {
-        //DEBUG(l_old);
-        //DEBUG(l_new);
+        printf("ADDSNDFILE: level_adapt_t %.9g -> %.9g\n"
+               "            ilen=%u,pos=%u,wnd(0)=%.9g\n",l_old_,l_new,
+                            ilen,   pos,   wnd.buf[pos]);
+        fflush(stdout);
     }
 
     void level_adapt_t::update_frame()
@@ -389,16 +391,21 @@ namespace addsndfile {
 
     void addsndfile_if_t::set_level()
     {
-        if( level_adaptor::cfg )
+        float old_level = 0;
+        if( level_adaptor::cfg ) {
+            old_level = level_adaptor::cfg->get_level();
             level_adaptor::push_config(new level_adapt_t(tftype,
                                                          ramplen.data,
                                                          2e-5*pow(10.0,0.05*level.data),
                                                          level_adaptor::cfg->get_level()));
+        }
         else
             level_adaptor::push_config(new level_adapt_t(tftype,
                                                          ramplen.data,
                                                          2e-5*pow(10.0,0.05*level.data),
                                                          0.0f));
+        printf("ADDSNDFILE: set_level %.9g -> %.9g\n",old_level,level.data);
+        fflush(stdout);
     }
 
     void addsndfile_if_t::update()

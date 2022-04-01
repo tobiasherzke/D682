@@ -184,6 +184,7 @@ function test_addsndfile_levelmode_rms(zerowav,rampwav,outwav)
 end
 
 function test_addsndfile_levelmode_peak(zerowav,rampwav,outwav)
+  'START_PEAK'
   % test if levelmode peak behaves as documented.
   dsc.instance = 'test_addsndfile_levelmode_peak';
   dsc.nchannels_in = 2;
@@ -198,9 +199,11 @@ function test_addsndfile_levelmode_peak(zerowav,rampwav,outwav)
   % magnitude sample from all channels combined is at ~94 dB inside mha
   % which corresponds to an amplitude of 1Pa inside mha.
   dsc.mha.level = log10(5e4) * 20;
-  mha = mha_start();
+  [mha,process] = mha_start();
   unittest_teardown(@mha_set, mha, 'cmd', 'quit');
-
+  stdout = javaObject('de.hoertech.mha.control.StreamGobbler', ...
+                    process.getInputStream, ... % InputStream is mha's stdout.
+                    true);                     % Store received text.
   mha_set(mha,'',dsc);
 
   % test that the addsndfile sound data is written to outwav
@@ -216,6 +219,7 @@ function test_addsndfile_levelmode_peak(zerowav,rampwav,outwav)
   mha_set(mha,'mha.level', level);
   mha_set(mha,'cmd','start');
   mha_set(mha,'cmd','release');
+  stdout.get()
   peak =  max(abs(audioread(outwav)));
   expected_peak = 10^(level/20)*2*10^(-5);
   expected_peak = 0.0014158915687682763; % Same as previous line except on Mac Homebrew 6.4.0
