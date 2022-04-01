@@ -230,6 +230,11 @@ namespace addsndfile {
 
         for(unsigned int k=0;k<num_frames;k++){
             value(k,0) = wnd.buf[pos]*l_new+(1.0f-wnd.buf[pos])*l_old;
+            if (k==0)
+                printf("UPDATE_FRAME: %.9g = %.9g*%.9g + (%.9g)*%.9g\n"
+                       "where the summands are: %.9g, %.9g and pos is %u\n",
+                       value(k,0), wnd.buf[pos],l_new, 1.0f-wnd.buf[pos], l_old,
+                       wnd.buf[pos]*l_new, (1.0f-wnd.buf[pos])*l_old, pos);
             if( pos )
                 pos--;
         }
