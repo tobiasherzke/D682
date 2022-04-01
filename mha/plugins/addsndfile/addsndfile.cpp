@@ -203,7 +203,7 @@ namespace addsndfile {
         void update_frame();
         mha_real_t get_level() const {return l_new;};
         bool can_update() const {return pos==0;};
-    private:
+    public:
         unsigned int ilen;
         unsigned int pos;
         MHAWindow::fun_t wnd;

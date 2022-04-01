@@ -13,7 +13,12 @@
 # You should have received a copy of the GNU Affero General Public License,
 # version 3 along with openMHA.  If not, see <http://www.gnu.org/licenses/>.
 
+custom: mytest all
+
 include ../plugin.mk
+
+mytest: $(BUILD_DIR)/testcos
+	$<
 
 # Local Variables:
 # compile-command: "make"
