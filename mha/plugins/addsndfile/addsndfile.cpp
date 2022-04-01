@@ -458,6 +458,8 @@ namespace addsndfile {
             level_adaptor::poll_config();
         level_adaptor::cfg->update_frame();
         wave_reader::cfg->playback(s,(MHASignal::loop_wavefragment_t::playback_mode_t)uint_mode,level_adaptor::cfg);
+        printf("OUTPUT VALUE OF max SAMPLE is %.09g\n", *std::max_element(&s->buf[0], &s->buf[s->num_channels * s->num_frames]));
+        fflush(stdout);
         return s;
     }
 
